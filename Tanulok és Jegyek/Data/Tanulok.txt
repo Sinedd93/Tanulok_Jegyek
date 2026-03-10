@@ -1,0 +1,6 @@
+﻿1,Kiss Péter,3.2
+2,Nagy Áron,3.5
+3,Hódi Benjámin,4.5
+4,Szabó Tímea,2.8
+5,Tóth Alex,4.1
+6,Tóth Sándor,4.4

@@ -1,0 +1,140 @@
+﻿@page
+@model IndexModel
+@{
+    
+}
+
+<div class="row">
+    <div class="card glass p-4">
+        <h4 class="mb-3">Tanulók kezelése</h4>
+
+        <form method="post">
+            <input type="hidden" name="Id" />
+
+            <div class="mb-3" style="width:250px;">
+                <label class="form-label">Név</label>
+                <input type="text" name = "Nev" value="@Model.Nev" />
+            </div>
+
+            <div class="mb-3" style="width:250px;">
+                <label class="form-label">Átlag</label>
+                <input type="text" name="Atlag" value="@Model.Atlag" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" asp-page-handler="Add">Felvétel</button>
+            <button type="submit" class="btn btn-secondary" asp-page-handler="Update">Módosítás</button>
+            <button type="submit" class="btn btn-warning" asp-page-handler="Delete">Törlés</button>
+            <button type="submit" class="btn btn-info" asp-page-handler="Avarage">Tanuló Átlag</button>
+            <button type="submit" class="btn btn-info" asp-page-handler="Best">Legjobb Tanuló</button>
+            <button type="submit" class="btn btn-info" asp-page-handler="Worst">Legrosszabb Tanuló</button>
+        </form>
+    </div>
+</div>
+
+@if(Model.TanulokLista.Any())
+{
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Név</th>
+                <th>Átlag</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach(var t in Model.TanulokLista)
+            {
+                <tr style="cursor:pointer"
+                    data-id="@t.Id"
+                    data-nev="@t.Nev"
+                    data-atlag="@t.Atlag"
+                    onclick="SelectStudent(this)">
+
+                    <td>@t.Id</td>
+                    <td>@t.Nev</td>
+                    <td>@t.Atlag</td>
+                    
+                </tr>
+                   
+            }
+        </tbody>
+    </table>
+
+   
+
+    
+}
+
+<div class="col-6">
+    <table>Tanulók...</table>
+
+    @if (!string.IsNullOrEmpty(Model.SikeresUzenet))
+    {
+        <p id="successMessage" class="mt-3" style="color:green; font-weight:bold;">
+            @Model.SikeresUzenet
+        </p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.SikertelenUzenet))
+    {
+        <p id="errorMessage" class="mt-3" style="color:red; font-weight:bold;">
+            @Model.SikertelenUzenet
+        </p>
+    }
+</div>
+
+@if (Model.AtlagUzenet != null)
+{
+    <p class="mt-3" style="color:blue; font-weight:bold;">
+        @Model.AtlagUzenet
+    </p>
+}
+@if(Model.LegjobbUzenet != null)
+{
+    <p class="mt-3" style="color:purple; font-weight:bold;">
+        @Model.LegjobbUzenet
+    </p>
+}
+
+@if(Model.LegrosszabbUzenet != null)
+{
+    <p class="mt-3" style="color:black; font-weight:bold;">
+        @Model.LegrosszabbUzenet
+    </p>
+}
+
+
+@section Scripts{
+    <script>
+                function SelectStudent(cell){
+
+            const id = cell.dataset.id;
+            const nev = cell.dataset.nev;
+            const atlag = cell.dataset.atlag;
+
+            document.querySelector('input[name="Id"]').value = id;
+            document.querySelector('input[name="Nev"]').value = nev;
+            document.querySelector('input[name="Atlag"]').value = atlag;
+        }
+
+            setTimeout(function(){
+
+            const messages = document.querySelectorAll("#successMessage, #errorMessage");
+
+            messages.forEach(m => {
+                m.style.transition = "opacity 0.5s";
+                m.style.opacity = "0";
+
+                setTimeout(()=> m.remove(), 500);
+            });
+
+        }, 3000);
+
+    </script>
+
+        
+}
+
+
+
